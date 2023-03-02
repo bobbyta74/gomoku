@@ -1,6 +1,6 @@
 #board {
-    width:800px;
-    height:800px;
+    width:90vh;
+    height:90vh;;
     display:grid;
     grid-template-columns:repeat(18, 1fr);
     background-color:#99591c;
@@ -9,6 +9,10 @@
 .gridsquare {
     border:2px solid black;
     padding:5px;
+}
+
+.gridsquare:hover {
+    filter:brightness(0.75);
 }
 
 .gridbutton {
