@@ -1,9 +1,29 @@
+body {
+    font-family: 'Patua One', cursive;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    gap:10px;
+    background-image:url("woodmain.jpg");
+}
+
 #board {
     width:90vh;
     height:90vh;;
     display:grid;
     grid-template-columns:repeat(18, 1fr);
     background-color:#99591c;
+}
+
+#result {
+    background-color:red;
+    position:absolute;
+    top:20%;
+    left:25%;
+    width:500px;
+    height:500px;
+    display:none;
 }
 
 .gridsquare {
