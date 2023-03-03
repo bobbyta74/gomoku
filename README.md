@@ -1,2 +1,2 @@
 # gomoku
-Why did you do this to me Mr Cressey
+Why did you do this to me mr cressey

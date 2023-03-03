@@ -34,14 +34,16 @@ function winUpLeft (squarenumber, array) {
     return (positionalcondition && (isInArray(squarenumber-19, array) && isInArray(squarenumber-38, array) && isInArray(squarenumber-57, array) && isInArray(squarenumber-76, array)));
 }
 
+
+//Check if won and act on it
 function checkWins (array) {
     for (let square of array) {
         if (winHorizontal(square, array) || winVertical(square, array) || winUpRight(square, array) || winUpLeft(square, array)) {
-            //result.style.display = "block";
-            //result.textContent = `${array[0]} wins!`;
-            alert(`${array[0]} wins!`);
-            let buttons = document.querySelectorAll(".gridbutton");
-            for (let button of buttons) {
+            result.style.display = "block";
+            result.textContent = `${array[0]} wins!`;
+            //alert(`${array[0]} wins!`);
+            let gridbuttons = document.querySelectorAll(".gridbutton");
+            for (let button of gridbuttons) {
                 button.disabled = true;
             }
         }

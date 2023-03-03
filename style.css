@@ -6,6 +6,15 @@ body {
     flex-direction:column;
     gap:10px;
     background-image:url("woodmain.jpg");
+    padding:20px;
+}
+
+#settings {
+    position:absolute;
+    padding:10px;
+    background-color:#3882f6;
+    border-radius:5px;
+    display:none;
 }
 
 #board {
