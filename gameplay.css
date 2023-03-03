@@ -1,5 +1,6 @@
 body {
-    font-family: 'Patua One', cursive;
+    font-family: 'Roboto', cursive;
+    font-weight:800;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -7,6 +8,12 @@ body {
     gap:10px;
     background-image:url("woodmain.jpg");
     padding:20px;
+}
+
+h1 {
+    margin:0;
+    font-family:'Macondo', cursive;
+    font-size:2.5rem;
 }
 
 #settings {
@@ -18,21 +25,35 @@ body {
 }
 
 #board {
-    width:90vh;
-    height:90vh;;
+    width:80vh;
+    height:80vh;;
     display:grid;
     grid-template-columns:repeat(18, 1fr);
     background-color:#99591c;
 }
 
 #result {
-    background-color:red;
+    background-color:#3882f6;
     position:absolute;
     top:20%;
     left:25%;
     width:500px;
     height:500px;
     display:none;
+}
+
+button:not(.gridbutton) {
+    background-color:#52b9a8;
+    border:2px solid black;
+    border-radius:5px;
+}
+
+button:not(.gridbutton):hover {
+    filter:brightness(0.8);
+}
+
+button:not(.gridbutton):active {
+    transform:scale(1.1);
 }
 
 .gridsquare {

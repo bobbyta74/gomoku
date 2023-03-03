@@ -6,11 +6,14 @@ const gridbuttons = document.querySelectorAll(".gridbutton");
 const closesettings = document.querySelector("#closesettings");
 const opensettings = document.querySelector("#opensettings");
 const settings = document.querySelector("#settings");
+const perma = document.querySelectorAll(".perma")
 
 
 opensettings.addEventListener("click", function() {
     settings.style.display = "block";
-    board1.style.filter = "blur(5px)";
+    for (let element of perma) {
+        element.style.filter = "blur(5px)";
+    }
     for (let button of gridbuttons) {
         button.disabled = true;
     }
@@ -18,7 +21,9 @@ opensettings.addEventListener("click", function() {
 
 closesettings.addEventListener("click", function() {
     settings.style.display = "none";
-    board1.style.filter = "none";
+    for (let element of perma) {
+        element.style.filter = "none";
+    }
     for (let button of gridbuttons) {
         button.disabled = false;
     }
