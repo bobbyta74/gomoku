@@ -35,31 +35,31 @@ clear.addEventListener("click", function () {
 
 const Themes = {
     wood: {
-        mainbg: "woodmain.jpg",
+        mainbg: "resources/woodmain.jpg",
         boardbg: "#99591c"
     },
     synthwave: {
-        mainbg: "synthwavemain.jpg",
+        mainbg: "resources/synthwavemain.jpg",
         boardbg: "linear-gradient(#dd01da, #007bf5)"
     },
     firewatch: {
-        mainbg: "firewatchmain.jpg",
+        mainbg: "resources/firewatchmain.jpg",
         boardbg: "linear-gradient(#f08132, #892e33)"
     },
     amogus: {
-        mainbg: "amogusmain.jpg",
+        mainbg: "resources/amogusmain.jpg",
         boardbg: "#3bfdff"
     },
     roblox: {
-        mainbg: "robloxmain.jpg",
+        mainbg: "resources/robloxmain.jpg",
         boardbg: "red"
     },
     mlg: {
-        mainbg: "mlgmain.jpg",
+        mainbg: "resources/mlgmain.jpg",
         boardbg: "#33ff00"
     },
     fortnite: {
-        mainbg: "fortnitemain.jpg",
+        mainbg: "resources/fortnitemain.jpg",
         boardbg: "#a338de"
     }
 }
