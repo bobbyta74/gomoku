@@ -5,6 +5,7 @@ let white = ["white"];
 let black = ["black"];
 let color;
 let positionalcondition;
+let gridbuttonarray = [];
 
 function isInArray (item, array) {
     return (array.indexOf(item) > -1);
@@ -33,11 +34,29 @@ function winUpLeft (squarenumber, array) {
     return (positionalcondition && (isInArray(squarenumber-19, array) && isInArray(squarenumber-38, array) && isInArray(squarenumber-57, array) && isInArray(squarenumber-76, array)));
 }
 
+let gamewon = false;
 function checkWins (array) {
     for (let square of array) {
         if (winHorizontal(square, array) || winVertical(square, array) || winUpRight(square, array) || winUpLeft(square, array)) {
+            gamewon = true;
             alert(`${array[0]} wins!`);
         }
+    }
+}
+
+function selectSquare(gridbutton, i) {
+    if ((!gamewon)&&(!(gridbutton.classList.contains("selected")))) {
+        color = players[turncounter%2];
+        gridbutton.style.backgroundColor = color;
+        gridbutton.classList.add("selected");
+        if (color == "white") {
+            white.push(i);
+            checkWins(white);
+        } else {
+            black.push(i);
+            checkWins(black);
+        }
+        turncounter += 1;
     }
 }
 
@@ -45,22 +64,25 @@ for (let i = 0; i < 18**2; i++) {
     let gridsquare = document.createElement("div");
     let gridbutton = document.createElement("button");
     gridbutton.classList.add("gridbutton");
+    gridbuttonarray.push(gridbutton);
     gridsquare.addEventListener("click", function () {
-        if (!(gridbutton.classList.contains("selected"))) {
-            color = players[turncounter%2]
-            gridbutton.style.backgroundColor = players[turncounter%2];
-            turncounter += 1;
-            gridbutton.classList.add("selected");
-            if (color == "white") {
-                white.push(i);
-                checkWins(white);
-            } else {
-                black.push(i);
-                checkWins(black);
-            }
-        }
+        selectSquare(gridbutton, i);
     })
     gridsquare.classList.add("gridsquare");
     gridsquare.appendChild(gridbutton);
     board.appendChild(gridsquare);
 }
+
+let squarenumber;
+let bot1stchoice;
+function runBot() {
+    if (!gamewon && (turncounter%2 == 0)) {
+        squarenumber = Math.floor(Math.random()*325);
+        while (gridbuttonarray[squarenumber].classList.contains("selected")) {
+            squarenumber = Math.floor(Math.random()*325);
+        }
+        selectSquare(gridbuttonarray[squarenumber], squarenumber);
+    }
+}
+
+setInterval(runBot, 10);
