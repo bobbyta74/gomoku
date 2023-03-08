@@ -1,6 +1,6 @@
 const board = document.querySelector("#board");
 const players = ["white", "black"];
-let turncounter = 0;
+let turncounter = 1;
 let white = ["white"];
 let black = ["black"];
 let color;
@@ -46,7 +46,7 @@ function checkWins (array) {
 
 function selectSquare(gridbutton, i) {
     if ((!gamewon)&&(!(gridbutton.classList.contains("selected")))) {
-        color = players[turncounter%2];
+        color = players[(turncounter-1)%2];
         gridbutton.style.backgroundColor = color;
         gridbutton.classList.add("selected");
         if (color == "white") {
@@ -75,14 +75,41 @@ for (let i = 0; i < 18**2; i++) {
 
 let squarenumber;
 let bot1stchoice;
+let fivebyfivelist = [];
+
+//Generates list of possible squares in 5x5 area
+function generateGoodSquares(center) {
+    fivebyfivelist = [];
+    for (let i = 0; i <= 4; i++) {
+        fivebyfivelist.push(center-38+i, center-38+i+18, center-38+i+36, center-38+i+54, center-38+i+72);
+    }
+}
+
+function chooseSquareFromList() {
+    squarenumber = fivebyfivelist[Math.floor(Math.random()*(fivebyfivelist.length+1))]
+}
+
+//Level 2: select squares around 1st choice
+//Level 3: select squares around player's 1st square
 function runBot() {
     if (!gamewon && (turncounter%2 == 0)) {
-        squarenumber = Math.floor(Math.random()*325);
-        while (gridbuttonarray[squarenumber].classList.contains("selected")) {
+        //If it's the beginning, select a random square to be the center of the grid
+        if (turncounter == 2) {
             squarenumber = Math.floor(Math.random()*325);
+            while (gridbuttonarray[squarenumber].classList.contains("selected")) {
+                squarenumber = Math.floor(Math.random()*325);
+            }
+            bot1stchoice = squarenumber;
+            generateGoodSquares(bot1stchoice);
+        } else {
+            //Otherwise select a random square within the 5x5 grid around the 1st choice
+            squarenumber = fivebyfivelist[Math.floor(Math.random()*(fivebyfivelist.length+1))];
         }
+
         selectSquare(gridbuttonarray[squarenumber], squarenumber);
     }
 }
 
+//Disable this line for multiplayer
 setInterval(runBot, 10);
+generateGoodSquares(39);
