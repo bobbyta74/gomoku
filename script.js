@@ -76,6 +76,7 @@ for (let i = 0; i < 18**2; i++) {
 let squarenumber;
 let bot1stchoice;
 let goodsquareslist = [];
+let goodsquaressize = 5;
 
 //Generates list of possible squares in 5x5 area
 function generateGoodSquares(center) {
@@ -104,9 +105,10 @@ function cleanUpGoodSquares() {
     console.log(goodsquareslist);
 }
 
-//Level 2: select squares around 1st choice
+//Level 2: select squares around random 1st choice
 //Level 3: select squares around player's 1st square
 //Level 4: bot starts, selects squares around 1st choice
+//SHITS THE BED IF 5x5 AREA FILLED IN VOLVO PLS FIX
 let difficulty = 3;
 function runBot() {
     if (!gamewon && (turncounter%2 == 0)) {
@@ -126,8 +128,12 @@ function runBot() {
             }
         } else {
             //Otherwise select a random square within the 5x5 grid around the 1st choice
-            //SHITS THE BED IF 5x5 AREA FILLED IN, VOLVO PLS  FIX
-            squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length+1))];
+            if (goodsquareslist.length > 0) {
+                squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length+1))];
+
+            } else {
+                makeSquareNumber(325);
+            }
         }
         console.log(squarenumber);
         selectSquare(gridbuttonarray[squarenumber], squarenumber);
@@ -137,4 +143,3 @@ function runBot() {
 
 //Disable this line for multiplayer
 setInterval(runBot, 10);
-generateGoodSquares(39);
