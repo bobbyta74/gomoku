@@ -82,7 +82,12 @@ let goodsquaressize = 5;
 function generateGoodSquares(center) {
     goodsquareslist = [];
     for (let i = 0; i <= 4; i++) {
-        goodsquareslist.push(center-38+i, center-38+i+18, center-38+i+36, center-38+i+54, center-38+i+72);
+        let goodchoices = [center-38+i, center-38+i+18, center-38+i+36, center-38+i+54, center-38+i+72]
+        for (let choice of goodchoices) {
+            if (choice >=0 && choice <= 323) {
+                goodsquareslist.push(choice);
+            }
+        }
     }
 }
 
