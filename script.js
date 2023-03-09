@@ -75,38 +75,63 @@ for (let i = 0; i < 18**2; i++) {
 
 let squarenumber;
 let bot1stchoice;
-let fivebyfivelist = [];
+let goodsquareslist = [];
 
 //Generates list of possible squares in 5x5 area
 function generateGoodSquares(center) {
-    fivebyfivelist = [];
+    goodsquareslist = [];
     for (let i = 0; i <= 4; i++) {
-        fivebyfivelist.push(center-38+i, center-38+i+18, center-38+i+36, center-38+i+54, center-38+i+72);
+        goodsquareslist.push(center-38+i, center-38+i+18, center-38+i+36, center-38+i+54, center-38+i+72);
     }
 }
 
-function chooseSquareFromList() {
-    squarenumber = fivebyfivelist[Math.floor(Math.random()*(fivebyfivelist.length+1))]
+//Generates random square until it chooses an unselected one
+function makeSquareNumber(max) {
+    squarenumber = Math.floor(Math.random()*max);
+    while (gridbuttonarray[squarenumber].classList.contains("selected")) {
+        squarenumber = Math.floor(Math.random()*max);
+    }
+}
+
+//Delete already selected squares from goodsquareslist so the computer doesn't try to select them
+function cleanUpGoodSquares() {
+    for (let i of goodsquareslist) {
+        if (gridbuttonarray[i].classList.contains("selected")) {
+            console.log(i, " is selected");
+            goodsquareslist.splice(goodsquareslist.indexOf(i), 1);
+        }
+    }
+    console.log(goodsquareslist);
 }
 
 //Level 2: select squares around 1st choice
 //Level 3: select squares around player's 1st square
+//Level 4: bot starts, selects squares around 1st choice
+let difficulty = 3;
 function runBot() {
     if (!gamewon && (turncounter%2 == 0)) {
+        cleanUpGoodSquares();
         //If it's the beginning, select a random square to be the center of the grid
         if (turncounter == 2) {
-            squarenumber = Math.floor(Math.random()*325);
-            while (gridbuttonarray[squarenumber].classList.contains("selected")) {
-                squarenumber = Math.floor(Math.random()*325);
+            if (difficulty == 3) {
+                //Bot chooses player's 1st square to  be center
+                bot1stchoice = white[1];
+                generateGoodSquares(bot1stchoice);
+                squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length+1))];
+            } else {
+                //Stupid bot chooses random square to be center
+                makeSquareNumber(325);
+                bot1stchoice = squarenumber;
+                generateGoodSquares(bot1stchoice);
             }
-            bot1stchoice = squarenumber;
-            generateGoodSquares(bot1stchoice);
         } else {
             //Otherwise select a random square within the 5x5 grid around the 1st choice
-            squarenumber = fivebyfivelist[Math.floor(Math.random()*(fivebyfivelist.length+1))];
+            //SHITS THE BED IF 5x5 AREA FILLED IN, VOLVO PLS  FIX
+            squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length+1))];
         }
-
+        console.log(squarenumber);
         selectSquare(gridbuttonarray[squarenumber], squarenumber);
+        cleanUpGoodSquares();
     }
 }
 
