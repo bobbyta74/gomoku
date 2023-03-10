@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gomoku</title>
+    <link rel="stylesheet" href="gameplay.css">
+    <script src="multiplayer.js" defer></script>
+    <script src="looks.js" defer></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Macondo&family=Roboto&display=swap');
+      </style>
+</head>
+<body>
+    <h1 class="perma">Gomoku</h1>
+    <div id="board" class="perma"></div></body>
+    <button id="clear">Clear</button>
+    <button id="opensettings">Settings</button>
+    <a href="index.html">Back to menu</a>
+    <div id="result"></div>
+    <div id="settings">
+        <button id="closesettings">x</button>
+        <label for="themes">Select a theme: </label>
+        <select name="themes" id="themes">
+            <option value="" selected disabled>Select theme</option>
+            <option value="wood">Wood</option>
+            <option value="synthwave">Synthwave</option>
+            <option value="firewatch">Firewatch</option>
+            <option value="amogus">Among Us</option>
+            <option value="roblox">Roblox</option>
+            <option value="mlg">MLG</option>
+            <option value="fortnite">Fortnite</option>
+        </select>
+    </div>
+</html>

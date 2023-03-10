@@ -1,0 +1,86 @@
+body {
+    font-family: 'Roboto', cursive;
+    font-weight:800;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    gap:10px;
+    background-image:url("resources/woodmain.jpg");
+    padding:20px;
+}
+
+h1 {
+    margin:0;
+    font-family:'Macondo', cursive;
+    font-size:2.5rem;
+}
+
+#settings {
+    position:absolute;
+    padding:10px;
+    background-color:#3882f6;
+    border-radius:5px;
+    display:none;
+}
+
+#board {
+    width:75vh;
+    height:75vh;;
+    display:grid;
+    grid-template-columns:repeat(18, 1fr);
+    background-color:#99591c;
+}
+
+#result {
+    background-color:#3882f6;
+    position:absolute;
+    top:20%;
+    left:25%;
+    width:500px;
+    height:500px;
+    display:none;
+}
+
+button:not(.gridbutton), a {
+    background-color:#52b9a8;
+    border:2px solid black;
+    border-radius:5px;
+}
+
+button:hover, a:hover {
+    filter:brightness(0.8);
+}
+
+button:not(.gridbutton):active, a:active {
+    transform:scale(1.1);
+}
+
+.gridsquare {
+    border:2px solid black;
+    padding:5px;
+}
+
+.gridsquare:hover {
+    filter:brightness(0.75);
+}
+
+.gridbutton {
+    border:none;
+    background-color:#99591c;
+    border-radius:50%;
+    width:100%;
+    height:100%;
+}
+
+#closesettings {
+    background-color:#f85d5a;
+}
+
+a {
+    padding:2px;
+    font-size:0.9rem;
+    text-decoration: none;
+    color:black;
+    font-weight:400;
+}
