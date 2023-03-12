@@ -7,6 +7,35 @@ let color;
 let positionalcondition;
 let gridbuttonarray = [];
 
+//Saves moves if you leave the page
+function saveMoves() {
+    localStorage.setItem("singleWhiteMoves", JSON.stringify(white));
+    localStorage.setItem("singleBlackMoves", JSON.stringify(black));
+}
+
+document.querySelector("#themes").addEventListener("input", saveMoves);
+document.querySelector("a").addEventListener("click", saveMoves);
+
+//Restores game to previous state on reload
+function restoreMoves() {
+    let localblack = JSON.parse(localStorage.getItem("singleBlackMoves"));
+    let localwhite = JSON.parse(localStorage.getItem("singleWhiteMoves"));
+    for (let i = 1; i < localblack.length; i++) {
+        let blackbutton = gridbuttonarray[localblack[i]];
+        blackbutton.style.backgroundColor = "black";
+        blackbutton.style.opacity = "1";
+        blackbutton.classList.add("selected");
+        black.push(localblack[i]);
+    }
+    for (let i = 1; i < localwhite.length; i++) {
+        let whitebutton = gridbuttonarray[localwhite[i]];
+        whitebutton.style.opacity = "1";
+        whitebutton.style.backgroundColor = "white";
+        whitebutton.classList.add("selected");
+        white.push(localwhite[i]);
+    }
+}
+
 function isInArray (item, array) {
     return (array.indexOf(item) > -1);
 }
@@ -105,7 +134,6 @@ function cleanUpGoodSquares() {
 //Use bigger grid in case all squares in existing one are selected
 function generateDefiniteSquares(center, size) {
     let gridsize = size;
-    console.log(gridsize);
     generateGoodSquares(center, size);
     //For some reason this script has to be run 100 times to work properly
     for (let i=0;i<100;i++) {
@@ -113,13 +141,11 @@ function generateDefiniteSquares(center, size) {
     }
     while (goodsquareslist.length == 0) {
         gridsize += 2;
-        console.log("wanker");
         generateGoodSquares(center, gridsize);
         for (let i=0;i<100;i++) {
             cleanUpGoodSquares();
         }
     }
-    console.log("length of goodsquareslist:", goodsquareslist.length)
 }
 
 //Level 2: select squares around random 1st choice
@@ -144,10 +170,10 @@ for (let i = 0; i < 18**2; i++) {
     gridsquare.addEventListener("click", function () {
         selectSquare(gridbutton, i);
         playerchoice = gridbuttonarray.indexOf(gridbutton);
-        console.log(playerchoice);
         runBot();
     })
     gridsquare.classList.add("gridsquare");
     gridsquare.appendChild(gridbutton);
     board.appendChild(gridsquare);
 }
+restoreMoves();

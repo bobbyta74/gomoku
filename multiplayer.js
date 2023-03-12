@@ -5,6 +5,37 @@ let white = ["white"];
 let black = ["black"];
 let color;
 let positionalcondition;
+let gridbuttonarray = [];
+
+//Saves moves if you leave the page
+function saveMoves() {
+    localStorage.setItem("multiWhiteMoves", JSON.stringify(white));
+    localStorage.setItem("multiBlackMoves", JSON.stringify(black));
+}
+
+document.querySelector("#themes").addEventListener("input", saveMoves);
+document.querySelector("a").addEventListener("click", saveMoves);
+
+//Restores game to previous state on reload
+function restoreMoves() {
+    let localblack = JSON.parse(localStorage.getItem("multiBlackMoves"));
+    let localwhite = JSON.parse(localStorage.getItem("multiWhiteMoves"));
+    for (let i = 1; i < localblack.length; i++) {
+        let blackbutton = gridbuttonarray[localblack[i]];
+        blackbutton.style.backgroundColor = "black";
+        blackbutton.style.opacity = "1";
+        blackbutton.classList.add("selected");
+        black.push(localblack[i]);
+    }
+    for (let i = 1; i < localwhite.length; i++) {
+        let whitebutton = gridbuttonarray[localwhite[i]];
+        whitebutton.style.opacity = "1";
+        whitebutton.style.backgroundColor = "white";
+        whitebutton.classList.add("selected");
+        white.push(localwhite[i]);
+    }
+}
+
 
 function isInArray (item, array) {
     return (array.indexOf(item) > -1);
@@ -45,6 +76,7 @@ for (let i = 0; i < 18**2; i++) {
     let gridsquare = document.createElement("div");
     let gridbutton = document.createElement("button");
     gridbutton.classList.add("gridbutton");
+    gridbuttonarray.push(gridbutton);
     gridsquare.addEventListener("click", function () {
         if (!(gridbutton.classList.contains("selected"))) {
             gridbutton.style.opacity = "1";
@@ -65,3 +97,4 @@ for (let i = 0; i < 18**2; i++) {
     gridsquare.appendChild(gridbutton);
     board.appendChild(gridsquare);
 }
+restoreMoves();

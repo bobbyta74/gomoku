@@ -31,6 +31,10 @@ closesettings.addEventListener("click", function() {
 
 clear.addEventListener("click", function () {
     document.location.reload();
+    localStorage.removeItem("singleBlackMoves");
+    localStorage.removeItem("singleWhiteMoves");
+    localStorage.removeItem("multiBlackMoves");
+    localStorage.removeItem("multiWhiteMoves");
 })
 
 const Themes = {
@@ -75,7 +79,12 @@ function displayTheme() {
         body.style.backgroundImage = `url("${chosentheme.mainbg}")`;
     }
     for (button of gridbuttons) {
-        button.style.opacity = "0";
+        let buttonnumber = gridbuttonarray.indexOf(button);
+        if ((!((white.indexOf(buttonnumber)) > -1)) && (!((black.indexOf(buttonnumber)) > -1))){
+            button.style.opacity = "0";
+        } else {
+            button.style.opacity = "1";
+        }
     }
 }
 
@@ -94,7 +103,6 @@ themeselect.addEventListener("change", function () {
     changeTheme();
 })
 
-console.log("wanker");
 if (localStorage.getItem("chosentheme") != null) {
     displayTheme();
 } else {
