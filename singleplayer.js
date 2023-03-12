@@ -46,9 +46,9 @@ function checkWins (array) {
 
 function selectSquare(gridbutton, i) {
     if ((!gamewon)&&(!(gridbutton.classList.contains("selected")))) {
-        gridbutton.style.opacity = "1";
         color = players[(turncounter-1)%2];
         gridbutton.style.backgroundColor = color;
+        gridbutton.style.opacity = "1";
         gridbutton.classList.add("selected");
         if (color == "white") {
             white.push(i);
@@ -61,20 +61,7 @@ function selectSquare(gridbutton, i) {
     }
 }
 
-for (let i = 0; i < 18**2; i++) {
-    let gridsquare = document.createElement("div");
-    let gridbutton = document.createElement("button");
-    gridbutton.classList.add("gridbutton");
-    gridbuttonarray.push(gridbutton);
-    gridsquare.addEventListener("click", function () {
-        selectSquare(gridbutton, i);
-        console.log(gridbuttonarray.indexOf(gridbutton));
-    })
-    gridsquare.classList.add("gridsquare");
-    gridsquare.appendChild(gridbutton);
-    board.appendChild(gridsquare);
-}
-
+let playerchoice;
 let squarenumber;
 let bot1stchoice;
 let goodsquareslist = [];
@@ -83,15 +70,16 @@ let goodsquareslist = [];
 function generateGoodSquares(center, size) {
     let goodchoices = [];
     goodsquareslist = [];
-    //19 for 3x3, 38 for 5x5, 57 for 7x7, 76 for 9x9
+    //38 for 5x5, 57 for 7x7, 76 for 9x9
     let start = center - (19+19*(size-3)/2);
     for (let i = 0; i < size; i++) {
         for (let j = 0; j <= 18*(size-1); j+=18) {
             goodchoices.push(start+i+j);
         }
     }
+    //Avoid putting in the center square and mathematically correct squares that aren't on the board (negative/greater than 323)
     for (let choice of goodchoices) {
-        if (choice >=0 && choice <= 323) {
+        if (choice >=0 && choice <= 323 && choice!==center) {
             goodsquareslist.push(choice);
         }
     }
@@ -114,44 +102,52 @@ function cleanUpGoodSquares() {
     }
 }
 
+//Use bigger grid in case all squares in existing one are selected
+function generateDefiniteSquares(center, size) {
+    let gridsize = size;
+    console.log(gridsize);
+    generateGoodSquares(center, size);
+    //For some reason this script has to be run 100 times to work properly
+    for (let i=0;i<100;i++) {
+        cleanUpGoodSquares();
+    }
+    while (goodsquareslist.length == 0) {
+        gridsize += 2;
+        console.log("wanker");
+        generateGoodSquares(center, gridsize);
+        for (let i=0;i<100;i++) {
+            cleanUpGoodSquares();
+        }
+    }
+    console.log("length of goodsquareslist:", goodsquareslist.length)
+}
+
 //Level 2: select squares around random 1st choice
 //Level 3: select squares around player's 1st square
 //Level 4: bot starts, selects squares around 1st choice
 //SHITS THE BED IF 5x5 AREA FILLED IN VOLVO PLS FIX
 let difficulty = 3;
-let squarelistsize = 3;
 function runBot() {
     if (!gamewon && (turncounter%2 == 0)) {
-        cleanUpGoodSquares();
-        //If it's the beginning, select a random square to be the center of the grid
-        if (turncounter == 2) {
-            if (difficulty == 3) {
-                //Bot chooses player's 1st square to  be center
-                bot1stchoice = white[1];
-                generateGoodSquares(bot1stchoice, 3);
-                squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length+1))];
-            } else {
-                //Stupid bot chooses random square to be center
-                makeSquareNumber(325);
-                bot1stchoice = squarenumber;
-                generateGoodSquares(bot1stchoice, 3);
-            }
-        } else {
-            //Otherwise select a random square within the 5x5 grid around the 1st choice
-            if (goodsquareslist.length > 0) {
-                squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length+1))];
-
-            } else {
-                //If good squares grid is full, expand it (e.g. 5x5 to 7x7)
-                squarelistsize += 2;
-                generateGoodSquares(bot1stchoice, squarelistsize)
-                squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length+1))];
-            }
-        }
+        generateDefiniteSquares(playerchoice, 3);
+        squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length))];
+        //Choose square and remove it from selectable squares list
         selectSquare(gridbuttonarray[squarenumber], squarenumber);
-        cleanUpGoodSquares();
     }
 }
 
-//Disable this line for multiplayer
-setInterval(runBot, 10);
+for (let i = 0; i < 18**2; i++) {
+    let gridsquare = document.createElement("div");
+    let gridbutton = document.createElement("button");
+    gridbutton.classList.add("gridbutton");
+    gridbuttonarray.push(gridbutton);
+    gridsquare.addEventListener("click", function () {
+        selectSquare(gridbutton, i);
+        playerchoice = gridbuttonarray.indexOf(gridbutton);
+        console.log(playerchoice);
+        runBot();
+    })
+    gridsquare.classList.add("gridsquare");
+    gridsquare.appendChild(gridbutton);
+    board.appendChild(gridsquare);
+}
