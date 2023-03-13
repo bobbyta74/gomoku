@@ -39,7 +39,15 @@ function blockAttack() {
             }
         }
     }
-    return "whatdowethinkoftottenham";
+    let horizontal = Math.random < 0.5 ? -1 : 1;
+    movechoice = currentmove + horizontal;
+    if (gridbuttonarray[movechoice].classList.contains("selected")) {
+        movechoice = currentmove + (horizontal*-1);
+        if (gridbuttonarray[movechoice].classList.contains("selected")) {
+            movechoice = "whatdowethinkoftottenham";
+        }
+    }
+    return movechoice;
 }
 
 //Saves moves if you leave the page
