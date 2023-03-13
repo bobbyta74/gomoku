@@ -6,6 +6,41 @@ let black = ["black"];
 let color;
 let positionalcondition;
 let gridbuttonarray = [];
+let previousmove;
+let currentmove;
+
+
+//Checks diagonals and vertical for attacks, chooses move that blocks it
+function blockAttack() {
+    let movechoice;
+    let otherchoices = white.slice(1);
+    otherchoices.splice(otherchoices.indexOf(currentmove), 1);
+    for (let x of otherchoices) {
+        for (let i = 17; i < 20; i++) {
+            let diff = x - currentmove;
+            if (diff % i == 0) {
+                if (diff > 0) {
+                    movechoice = currentmove - i;
+                    if (gridbuttonarray[movechoice].classList.contains("selected")) {
+                        movechoice = currentmove + i;
+                    }
+                }
+                else {
+                    movechoice = currentmove - i;
+                    if (gridbuttonarray[movechoice].classList.contains("selected")) {
+                        movechoice = currentmove + i;
+                    }
+                }
+                if (movechoice >= 0 && movechoice <= 323) {
+                    if (!(gridbuttonarray[movechoice].classList.contains("selected"))) {
+                        return movechoice;
+                    }
+                }
+            }
+        }
+    }
+    return "whatdowethinkoftottenham";
+}
 
 //Saves moves if you leave the page
 function saveMoves() {
@@ -133,6 +168,7 @@ function cleanUpGoodSquares() {
 
 //Use bigger grid in case all squares in existing one are selected
 function generateDefiniteSquares(center, size) {
+    //Chooses random neighbouring square if there is no attack to be blocked
     let gridsize = size;
     generateGoodSquares(center, size);
     //For some reason this script has to be run 100 times to work properly
@@ -151,12 +187,14 @@ function generateDefiniteSquares(center, size) {
 //Level 2: select squares around random 1st choice
 //Level 3: select squares around player's 1st square
 //Level 4: bot starts, selects squares around 1st choice
-//SHITS THE BED IF 5x5 AREA FILLED IN VOLVO PLS FIX
-let difficulty = 3;
 function runBot() {
     if (!gamewon && (turncounter%2 == 0)) {
-        generateDefiniteSquares(playerchoice, 3);
-        squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length))];
+        squarenumber = blockAttack();
+        console.log(squarenumber);
+        if (squarenumber == "whatdowethinkoftottenham" || squarenumber == undefined) {
+            generateDefiniteSquares(playerchoice, 3);
+            squarenumber = goodsquareslist[Math.floor(Math.random()*(goodsquareslist.length))];
+        }
         //Choose square and remove it from selectable squares list
         selectSquare(gridbuttonarray[squarenumber], squarenumber);
     }
@@ -169,7 +207,9 @@ for (let i = 0; i < 18**2; i++) {
     gridbuttonarray.push(gridbutton);
     gridsquare.addEventListener("click", function () {
         selectSquare(gridbutton, i);
+        previousmove = playerchoice;
         playerchoice = gridbuttonarray.indexOf(gridbutton);
+        currentmove = playerchoice;
         runBot();
     })
     gridsquare.classList.add("gridsquare");
