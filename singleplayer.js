@@ -112,6 +112,11 @@ function checkWins (array) {
         if (winHorizontal(square, array) || winVertical(square, array) || winUpRight(square, array) || winUpLeft(square, array)) {
             gamewon = true;
             alert(`${array[0]} wins!`);
+            document.location.reload();
+            localStorage.removeItem("singleBlackMoves");
+            localStorage.removeItem("singleWhiteMoves");
+            localStorage.removeItem("multiBlackMoves");
+            localStorage.removeItem("multiWhiteMoves");
         }
     }
 }

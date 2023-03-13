@@ -7,6 +7,7 @@ const closesettings = document.querySelector("#closesettings");
 const opensettings = document.querySelector("#opensettings");
 const settings = document.querySelector("#settings");
 const perma = document.querySelectorAll(".perma")
+const heading = document.querySelector("h1");
 
 
 opensettings.addEventListener("click", function() {
@@ -72,6 +73,7 @@ let chosentheme;
 function displayTheme() {
     chosentheme = JSON.parse(localStorage.getItem("chosentheme"));
     board1.style.background = chosentheme.boardbg;
+    heading.style.background = chosentheme.boardbg;
     if ("mainbgcolor" in chosentheme) {
         body.style.backgroundImage = "none";
         body.style.backgroundColor = chosentheme.mainbgcolor;

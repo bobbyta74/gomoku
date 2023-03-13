@@ -14,6 +14,9 @@ h1 {
     margin:0;
     font-family:'Macondo', cursive;
     font-size:2.5rem;
+    padding:5px;
+    background-color:#fe5d7e;
+    border-radius:7px;
 }
 
 #settings {
