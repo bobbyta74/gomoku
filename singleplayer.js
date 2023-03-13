@@ -9,45 +9,116 @@ let gridbuttonarray = [];
 let previousmove;
 let currentmove;
 
+function chooseBlockAgainst(move) {
+    //Block horizontal emergency
+    /*
+    let hasrow = true;
+    for (let button = 0; button < gridbuttonarray.length - 5; button++) {
+        for (let i = 0; i < 4; i++) {
+            if (!(gridbuttonarray[button + i].classList.contains("selected"))) {
+                hasrow = false;
+            }
+        }
+        if (hasrow) {
+            if (!gridbuttonarray[currentmove - 1].classList.contains("selected")) {
+                return currentmove - 1;
+            } else if (!gridbuttonarray[currentmove + 4].classList.contains("selected")) {
+                return currentmove + 4;
+            }
+        }
+    }
+    let hascolumn = true;
+    for (let button = 0; button < gridbuttonarray.length - 18*5; button++) {
+        for (let i = 0; i < 4; i++) {
+            if (!(gridbuttonarray[button + i*18].classList.contains("selected"))) {
+                hascolumn = false;
+            }
+        }
+        if (hascolumn) {
+            if (!gridbuttonarray[currentmove - 18].classList.contains("selected")) {
+                return currentmove - 18;
+            }
+        }
+    }
+    */
+    for (let i = 17; i < 20; i++) {
+        let diff = move - currentmove;
+        if (diff % i == 0) {
+            if (diff > 0) {
+                movechoice = currentmove - i;
+                if (gridbuttonarray[movechoice].classList.contains("selected")) {
+                    movechoice = currentmove + i;
+                }
+            }
+            else {
+                movechoice = currentmove - i;
+                if (gridbuttonarray[movechoice].classList.contains("selected")) {
+                    movechoice = currentmove + i;
+                }
+            }
+            if (movechoice >= 0 && movechoice <= 323) {
+                if (!(gridbuttonarray[movechoice].classList.contains("selected"))) {
+                    return movechoice;
+                }
+            }
+        }
+    }
+    let horizontal = Math.random < 0.5 ? -1 : 1;
+        movechoice = currentmove + horizontal;
+        if (gridbuttonarray[movechoice].classList.contains("selected")) {
+            movechoice = currentmove + (horizontal*-1);
+            if (gridbuttonarray[movechoice].classList.contains("selected")) {
+                movechoice = "whatdowethinkoftottenham";
+            }
+        }
+        return movechoice;
+}
 
 //Checks diagonals and vertical for attacks, chooses move that blocks it
 function blockAttack() {
     let movechoice;
     let otherchoices = white.slice(1);
     otherchoices.splice(otherchoices.indexOf(currentmove), 1);
-    for (let x of otherchoices) {
-        for (let i = 17; i < 20; i++) {
-            let diff = x - currentmove;
-            if (diff % i == 0) {
-                if (diff > 0) {
-                    movechoice = currentmove - i;
-                    if (gridbuttonarray[movechoice].classList.contains("selected")) {
-                        movechoice = currentmove + i;
+    //Check previous move first to see if player is trying to mount predictable attack
+    movechoice = chooseBlockAgainst(previousmove);
+    try {
+        return movechoice;
+    } catch {
+        //Then check if there are any attacks in general
+        for (let x of otherchoices) {
+            for (let i = 17; i < 20; i++) {
+                let diff = x - currentmove;
+                if (diff % i == 0) {
+                    if (diff > 0) {
+                        movechoice = currentmove - i;
+                        if (gridbuttonarray[movechoice].classList.contains("selected")) {
+                            movechoice = currentmove + i;
+                        }
                     }
-                }
-                else {
-                    movechoice = currentmove - i;
-                    if (gridbuttonarray[movechoice].classList.contains("selected")) {
-                        movechoice = currentmove + i;
+                    else {
+                        movechoice = currentmove - i;
+                        if (gridbuttonarray[movechoice].classList.contains("selected")) {
+                            movechoice = currentmove + i;
+                        }
                     }
-                }
-                if (movechoice >= 0 && movechoice <= 323) {
-                    if (!(gridbuttonarray[movechoice].classList.contains("selected"))) {
-                        return movechoice;
+                    if (movechoice >= 0 && movechoice <= 323) {
+                        if (!(gridbuttonarray[movechoice].classList.contains("selected"))) {
+                            return movechoice;
+                        }
                     }
                 }
             }
         }
-    }
-    let horizontal = Math.random < 0.5 ? -1 : 1;
-    movechoice = currentmove + horizontal;
-    if (gridbuttonarray[movechoice].classList.contains("selected")) {
-        movechoice = currentmove + (horizontal*-1);
+        let horizontal = Math.random < 0.5 ? -1 : 1;
+        movechoice = currentmove + horizontal;
         if (gridbuttonarray[movechoice].classList.contains("selected")) {
-            movechoice = "whatdowethinkoftottenham";
+            movechoice = currentmove + (horizontal*-1);
+            if (gridbuttonarray[movechoice].classList.contains("selected")) {
+                movechoice = "whatdowethinkoftottenham";
+            }
         }
+        return movechoice;
     }
-    return movechoice;
 }
 
 //Saves moves if you leave the page

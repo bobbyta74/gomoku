@@ -52,6 +52,7 @@ button:not(.gridbutton), a {
 }
 
 button:hover, a:hover {
+    opacity: 1;
     filter:brightness(0.8);
 }
 
